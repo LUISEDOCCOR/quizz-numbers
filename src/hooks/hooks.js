@@ -1,7 +1,7 @@
 import { useState } from "react"
 
-const SIZEX = 4
-const SIZEY = 4
+export const SIZEX = 4
+export const SIZEY = 4
 
 const createPieces = () => {
 

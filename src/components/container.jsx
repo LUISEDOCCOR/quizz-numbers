@@ -1,8 +1,8 @@
 import { useState } from "react"
 import sound from "../assets/sound.mp3"
-import { useEffect } from "react"
+import { SIZEY } from "../hooks/hooks"
 
-export const Conatiner = ({ children, container, movingPiece }) => {
+export const Conatiner = ({ children, container, movingPiece, setBoard, board }) => {
     const [isDragOver, setDragOver] = useState(false)
 
     const playSound = () => {
@@ -18,12 +18,23 @@ export const Conatiner = ({ children, container, movingPiece }) => {
 
     const handleOnDrop = () => {
         setDragOver(false)
-        if(container.isEmpty){
+        const PossibleMoves = [
+            container.index + SIZEY, 
+            container.index - SIZEY, 
+            container.index + 1,
+            container.index - 1
+        ]
+        console.log(PossibleMoves)
+        if(container.isEmpty && PossibleMoves.includes(movingPiece.index)){
             playSound()
             const $piece = document.getElementById(`piece-${movingPiece.index}`)
             const $container = document.getElementById(`container-${container.index}`)
             console.log(movingPiece)
             $container.appendChild($piece)
+            const newBoard = board
+            newBoard[container.index - 1].isEmpty = false
+            newBoard[movingPiece.index - 1].isEmpty = true
+            setBoard(newBoard)
         }
     }
 

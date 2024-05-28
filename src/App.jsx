@@ -2,13 +2,14 @@ import { usePieces, useBoard } from "./hooks/hooks"
 import { Conatiner } from "./components/container"
 import { Piece } from "./components/piece"
 import { useState } from "react"
+import { SIZEX, SIZEY } from "./hooks/hooks"
+
 
 function App() {
 
   const [ pieces, setPieces ] = usePieces()
   const [ board, setBoard ] = useBoard() 
   const [movingPiece, setMovingPiece] = useState()
-
 
   return (
     <>
@@ -23,8 +24,8 @@ function App() {
             board.map((container) => {
               const piece = pieces.find(p => p.index == container.index)
               return (
-                <Conatiner movingPiece={movingPiece} key={container.index} container={container}>
-                  {container.index != 16 && (
+                <Conatiner board={board} setBoard={setBoard} movingPiece={movingPiece} key={container.index} container={container}>
+                  {container.index != (SIZEX * SIZEY) && (
                     <Piece setMovingPiece={setMovingPiece}  key={piece.index} piece={piece}/>
                   )}
                 </Conatiner> 
