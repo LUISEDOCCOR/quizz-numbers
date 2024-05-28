@@ -1,21 +1,14 @@
-import { useEffect } from "react"
-import { useGame } from "./hooks/useGame"
+import { usePieces, useBoard } from "./hooks/hooks"
+import { Conatiner } from "./components/container"
+import { Piece } from "./components/piece"
 import { useState } from "react"
-
-
 
 function App() {
 
-  const { game } = useGame()
-
+  const [ pieces, setPieces ] = usePieces()
+  const [ board, setBoard ] = useBoard() 
   const [movingPiece, setMovingPiece] = useState()
 
-
-  useEffect(() => {
-    if(movingPiece){
-      console.log(movingPiece)
-    }
-  })
 
   return (
     <>
@@ -25,21 +18,18 @@ function App() {
       > 
         {/* Grid */}
         <section className="bg-neutral-800 rounded-sm grid overflow-hidden 
-        grid-cols-4 grid-rows-4 w-[95vw] h-[95vw] xl:w-[40vw] xl:h-[40vw]">
+        grid-cols-4 grid-rows-4 w-[95vw] h-[95vw] xl:w-[40vw] xl:h-[40vw] border-[1px] border-neutral-600">
           {
-            game.map((row) => (
-              row.map((piece) => (
-                <div 
-                  className={`flex justify-center items-center border-[1px] border-red-400
-                  text-5xl text-white font-semibold ${!piece.isEmpty && (piece.color == "red" ? "bg-red-500" : "bg-blue-500")}`}
-                  key={piece.index}
-                  draggable={!piece.isEmpty}
-                  onDragStart={() => {setMovingPiece(piece)}}
-                >
-                  {!piece.isEmpty && piece.index}
-                </div>
-              ))
-            ))
+            board.map((container) => {
+              const piece = pieces.find(p => p.index == container.index)
+              return (
+                <Conatiner movingPiece={movingPiece} key={container.index} container={container}>
+                  {container.index != 16 && (
+                    <Piece setMovingPiece={setMovingPiece}  key={piece.index} piece={piece}/>
+                  )}
+                </Conatiner> 
+              )
+            })
           }
         </section>
       </main>
